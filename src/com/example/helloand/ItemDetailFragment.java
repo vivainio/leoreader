@@ -1,5 +1,6 @@
 package com.example.helloand;
 
+import info.vv.lunchlister.hermia.R;
 import java.util.List;
 
 import android.os.Bundle;
