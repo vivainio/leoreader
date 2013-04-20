@@ -1,4 +1,4 @@
-package com.example.helloand;
+package com.example.lunchlister;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.example.helloand.dummy.DummyContent;
+import com.example.lunchlister.dummy.DummyContent;
 
 /**
  * A list fragment representing a list of Items. This fragment also supports

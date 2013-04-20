@@ -1,4 +1,4 @@
-package com.example.helloand.dummy;
+package com.example.lunchlister.dummy;
 
 import java.util.ArrayList;
 import java.util.HashMap;

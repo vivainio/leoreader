@@ -1,4 +1,4 @@
-package com.example.helloand;
+package com.example.lunchlister;
 
 import android.content.Intent;
 import android.os.Bundle;

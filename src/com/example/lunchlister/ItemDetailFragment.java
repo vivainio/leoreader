@@ -1,4 +1,4 @@
-package com.example.helloand;
+package com.example.lunchlister;
 
 import info.vv.lunchlister.hermia.R;
 import java.util.List;
@@ -11,7 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.helloand.dummy.DummyContent;
+import com.example.lunchlister.dummy.DummyContent;
 import com.w.Course;
 import com.w.LunchContent;
 import com.w.LunchEngine;
