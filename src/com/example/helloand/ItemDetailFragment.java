@@ -1,13 +1,19 @@
 package com.example.helloand;
 
+import java.util.List;
+
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.helloand.dummy.DummyContent;
+import com.w.Course;
+import com.w.LunchContent;
+import com.w.LunchEngine;
 
 /**
  * A fragment representing a single Item detail screen. This fragment is either
@@ -54,8 +60,32 @@ public class ItemDetailFragment extends Fragment {
 
 		// Show the dummy content as text in a TextView.
 		if (mItem != null) {
+			//((TextView) rootView.findViewById(R.id.item_detail))
+			//		.setText(mItem.content);
+			
+			/*
+			String loc = getArguments().getString(
+					ARG_ITEM_ID);
+			StringBuilder b = new StringBuilder();
+			b.append(mItem.content);
+			
+			List<Course> li = LunchContent.ITEMS.get(loc);
+			// fetch the courses for this restaurant
+			for (Course c : li) {
+				b.append(c.getCategory());
+				b.append("\n");
+				b.append(c.getTitle());
+				b.append("\n");
+				
+				
+			}
+			*/
+			String loc = getArguments().getString(
+					ARG_ITEM_ID);
+			
+			Spanned span = LunchEngine.renderLunchList(loc);
 			((TextView) rootView.findViewById(R.id.item_detail))
-					.setText(mItem.content);
+			.setText(span);
 		}
 
 		return rootView;
