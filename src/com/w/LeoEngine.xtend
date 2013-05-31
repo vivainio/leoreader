@@ -1,12 +1,11 @@
 package com.w
 
-import org.xmlpull.v1.XmlPullParser
-import org.xmlpull.v1.XmlPullParserFactory
-import java.io.FileInputStream
-import java.io.FileReader
-import java.util.Hashtable
 import info.vv.leoreader.dummy.ScreenContent
 import info.vv.leoreader.dummy.ScreenContent$OutlineItem
+import java.io.FileReader
+import java.util.Hashtable
+import org.xmlpull.v1.XmlPullParser
+import org.xmlpull.v1.XmlPullParserFactory
 
 @Data class Course {
 }
@@ -53,7 +52,7 @@ class LeoDoc {
 					switch name {
 						case "vh": {
 							println('''End tag vh t = «text» gnx = «gnx»''')
-							val node = new Node(gnx, text, "")
+							val node = new Node(gnx, text, "some body\nnew line")
 							nodes.put(gnx, node)
 						}
 					}
@@ -63,16 +62,40 @@ class LeoDoc {
 							gnx = p.getAttributeValue("", "t")
 					}
 			}
+			ScreenContent::ITEMS.clear
+			ScreenContent::ITEM_MAP.clear
 
 			eventType = p.next
 
 		}
 
 	}
+	
+	
 }
 
 class LeoEngine {
 	LeoDoc doc
+	
+	static LeoEngine _le
+	
+	Node currentNode
+	
+	def selectNode(String gnx) {
+		currentNode = doc.get(gnx)		
+	}
+	
+	def currentBody() {
+		return currentNode.b
+	}
+	
+	static def getInstance() {
+		if (_le == null) {
+			_le = new LeoEngine
+		}
+		return _le
+		
+	}
 
 	def start() {
 		doc = new LeoDoc
