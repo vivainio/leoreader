@@ -1,6 +1,5 @@
 package com.w;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,10 +34,6 @@ public class LunchContent {
 		//addItem(new DummyItem("3", "Item 3"));
 	}
 
-	private static void addItem(Course item) {
-		//ITEMS.add(item);
-		//ITEM_MAP.put(item.id, item);
-	}
 	
 
 }
