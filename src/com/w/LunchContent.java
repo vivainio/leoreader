@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.tantalum.util.L;
 
 /**
  * Helper class for providing sample content for user interfaces created by
@@ -41,8 +40,5 @@ public class LunchContent {
 		//ITEM_MAP.put(item.id, item);
 	}
 	
-	public static void dump() {
-		L.i("dump LuncContent", ITEMS.toString());
-	}
 
 }
