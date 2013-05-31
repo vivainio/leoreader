@@ -5,6 +5,8 @@ import org.xmlpull.v1.XmlPullParserFactory
 import java.io.FileInputStream
 import java.io.FileReader
 import java.util.Hashtable
+import info.vv.leoreader.dummy.ScreenContent
+import info.vv.leoreader.dummy.ScreenContent$OutlineItem
 
 @Data class Course {
 }
@@ -20,9 +22,14 @@ class LeoDoc {
 	Hashtable<String, Node> nodes
 
 	new() {
-		nodes = new Hashtable<String, Node> 
-		
+		nodes = new Hashtable<String, Node>
+
 	}
+
+	def getNodes() {
+		nodes
+	}
+
 	def Node get(String gnx) {
 		nodes.get(gnx)
 	}
@@ -35,7 +42,7 @@ class LeoDoc {
 		var eventType = p.eventType
 		var text = ""
 		var gnx = ""
-		
+
 		while (eventType != XmlPullParser::END_DOCUMENT) {
 			val name = p.name
 			println(name)
@@ -49,8 +56,6 @@ class LeoDoc {
 							val node = new Node(gnx, text, "")
 							nodes.put(gnx, node)
 						}
-							
-							
 					}
 				case XmlPullParser::START_TAG:
 					switch name {
@@ -67,10 +72,21 @@ class LeoDoc {
 }
 
 class LeoEngine {
+	LeoDoc doc
 
 	def start() {
-		val doc = new LeoDoc
+		doc = new LeoDoc
 		doc.read("/sdcard/Download/workbook.leo")
+		val ns = doc.nodes
+
+		ScreenContent::ITEMS.clear
+		ScreenContent::ITEM_MAP.clear
+
+		ns.forEach [ k, v |
+			val olit = new OutlineItem(v.gnx, v.h)
+			ScreenContent::addItem(olit)
+		]
+
 	}
 
 }
