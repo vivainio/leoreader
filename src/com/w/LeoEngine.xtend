@@ -6,28 +6,42 @@ import java.io.FileReader
 import java.util.Hashtable
 import org.xmlpull.v1.XmlPullParser
 import org.xmlpull.v1.XmlPullParserFactory
+import android.content.Intent
+import java.io.InputStreamReader
+import java.io.InputStream
+import java.io.FileInputStream
 
 @Data class Course {
 }
 
-
 class LeoNode {
-	
+
 	String _h
 	String _b
 	String _gnx
 
 	new(String gnx, String h, String b) {
-		_gnx = gnx; _h = h; _b = b
-		
-	}	
+		_gnx = gnx;
+		_h = h;
+		_b = b
+
+	}
+
 	def void setB(String body) {
 		_b = body
 	}
-	
-	def getH() { _h }
-	def getB() { _b }
-	def getGnx() { _gnx }
+
+	def getH() {
+		_h
+	}
+
+	def getB() {
+		_b
+	}
+
+	def getGnx() {
+		_gnx
+	}
 
 }
 
@@ -46,12 +60,15 @@ class LeoDoc {
 	def LeoNode get(String gnx) {
 		nodes.get(gnx)
 	}
-
-	def read(String fname) {
+	def readFile(String fname) {
+		read(new FileInputStream(fname));
+				
+	}
+	def read(InputStream is) {
 		val pf = XmlPullParserFactory::newInstance
 		nodes.clear
 		val p = pf.newPullParser
-		p.setInput(new FileReader(fname))
+		p.setInput(new InputStreamReader(is))
 		var eventType = p.eventType
 		var text = ""
 		var gnx = ""
@@ -71,7 +88,7 @@ class LeoDoc {
 						}
 						case "t": {
 							val node = get(gnx)
-							node.b = text	
+							node.b = text
 						}
 					}
 				case XmlPullParser::START_TAG:
@@ -100,8 +117,10 @@ class LeoEngine {
 
 	LeoNode _currentNode
 
-	def currentNode() { _currentNode }
-	
+	def currentNode() {
+		_currentNode
+	}
+
 	def selectNode(String gnx) {
 		_currentNode = doc.get(gnx)
 	}
@@ -118,9 +137,12 @@ class LeoEngine {
 
 	}
 
+	def openURl() {
+		
+	}
 	def start() {
 		doc = new LeoDoc
-		doc.read("/sdcard/Download/workbook.leo")
+		doc.readFile("/sdcard/Download/workbook.leo")
 		val ns = doc.nodes
 
 		ScreenContent::ITEMS.clear
@@ -131,6 +153,10 @@ class LeoEngine {
 			ScreenContent::addItem(olit)
 		]
 
+	}
+	
+	def openFile() {
+		
 	}
 
 }
