@@ -10,6 +10,15 @@ import android.content.Intent
 import java.io.InputStreamReader
 import java.io.InputStream
 import java.io.FileInputStream
+import android.net.Uri
+import android.content.ContentResolver
+import android.app.Activity
+import android.widget.ArrayAdapter
+import android.content.Context
+import java.util.List
+import android.R
+import java.util.HashMap
+import java.util.ArrayList
 
 @Data class Course {
 }
@@ -60,10 +69,12 @@ class LeoDoc {
 	def LeoNode get(String gnx) {
 		nodes.get(gnx)
 	}
+
 	def readFile(String fname) {
 		read(new FileInputStream(fname));
-				
+
 	}
+
 	def read(InputStream is) {
 		val pf = XmlPullParserFactory::newInstance
 		nodes.clear
@@ -112,10 +123,29 @@ class LeoDoc {
 
 class LeoEngine {
 	LeoDoc doc
+	Activity rootActivity
+	ArrayAdapter<OutlineItem> adapter
+	public List<OutlineItem> ITEMS // = new ArrayList<OutlineItem>();
+	public HashMap<String, OutlineItem> ITEM_MAP
+
+	def setRootActivity(Activity a) {
+		rootActivity = a
+		adapter = new ArrayAdapter<OutlineItem>(a, R$layout::simple_list_item_activated_1, R$id::text1, ITEMS);
+	}
 
 	static LeoEngine _le
 
 	LeoNode _currentNode
+
+	new() {
+		ITEM_MAP = new HashMap<String, OutlineItem>()
+		ITEMS = new ArrayList<OutlineItem>()
+
+	}
+
+	def getAdapter() {
+		adapter
+	}
 
 	def currentNode() {
 		_currentNode
@@ -137,26 +167,29 @@ class LeoEngine {
 
 	}
 
-	def openURl() {
-		
-	}
-	def start() {
+	def openURl(Uri uri) {
 		doc = new LeoDoc
-		doc.readFile("/sdcard/Download/workbook.leo")
-		val ns = doc.nodes
+		doc.read(rootActivity.contentResolver.openInputStream(uri))
+		render()
+	}
 
-		ScreenContent::ITEMS.clear
-		ScreenContent::ITEM_MAP.clear
+	def addItem(OutlineItem item) {
+		ITEMS.add(item)
+		ITEM_MAP.put(item.id, item)
+	}
+
+	def render() {
+		val ns = doc.nodes
+		ITEMS.clear
+		ITEM_MAP.clear
 
 		ns.forEach [ k, v |
 			val olit = new OutlineItem(v.gnx, v.h)
-			ScreenContent::addItem(olit)
+			addItem(olit)
 		]
+		adapter.notifyDataSetChanged
 
-	}
-	
-	def openFile() {
-		
 	}
 
 }
+// ui classes
