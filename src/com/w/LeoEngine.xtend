@@ -10,10 +10,24 @@ import org.xmlpull.v1.XmlPullParserFactory
 @Data class Course {
 }
 
-@Data class Node {
-	String gnx
-	String h
-	String b
+
+class Node {
+	
+	String _h
+	String _b
+	String _gnx
+
+	new(String gnx, String h, String b) {
+		_gnx = gnx; _h = h; _b = b
+		
+	}	
+	def void setB(String body) {
+		_b = body
+	}
+	
+	def getH() { _h }
+	def getB() { _b }
+	def getGnx() { _gnx }
 
 }
 
@@ -55,11 +69,17 @@ class LeoDoc {
 							val node = new Node(gnx, text, "some body\nnew line")
 							nodes.put(gnx, node)
 						}
+						case "t": {
+							val node = get(gnx)
+							node.b = text	
+						}
 					}
 				case XmlPullParser::START_TAG:
 					switch name {
 						case "v":
 							gnx = p.getAttributeValue("", "t")
+						case "t":
+							gnx = p.getAttributeValue("", "tx")
 					}
 			}
 			ScreenContent::ITEMS.clear
@@ -70,31 +90,30 @@ class LeoDoc {
 		}
 
 	}
-	
-	
+
 }
 
 class LeoEngine {
 	LeoDoc doc
-	
+
 	static LeoEngine _le
-	
+
 	Node currentNode
-	
+
 	def selectNode(String gnx) {
-		currentNode = doc.get(gnx)		
+		currentNode = doc.get(gnx)
 	}
-	
+
 	def currentBody() {
 		return currentNode.b
 	}
-	
+
 	static def getInstance() {
 		if (_le == null) {
 			_le = new LeoEngine
 		}
 		return _le
-		
+
 	}
 
 	def start() {
