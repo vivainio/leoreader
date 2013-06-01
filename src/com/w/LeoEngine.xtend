@@ -11,7 +11,7 @@ import org.xmlpull.v1.XmlPullParserFactory
 }
 
 
-class Node {
+class LeoNode {
 	
 	String _h
 	String _b
@@ -32,10 +32,10 @@ class Node {
 }
 
 class LeoDoc {
-	Hashtable<String, Node> nodes
+	Hashtable<String, LeoNode> nodes
 
 	new() {
-		nodes = new Hashtable<String, Node>
+		nodes = new Hashtable<String, LeoNode>
 
 	}
 
@@ -43,7 +43,7 @@ class LeoDoc {
 		nodes
 	}
 
-	def Node get(String gnx) {
+	def LeoNode get(String gnx) {
 		nodes.get(gnx)
 	}
 
@@ -66,7 +66,7 @@ class LeoDoc {
 					switch name {
 						case "vh": {
 							println('''End tag vh t = «text» gnx = «gnx»''')
-							val node = new Node(gnx, text, "some body\nnew line")
+							val node = new LeoNode(gnx, text, "some body\nnew line")
 							nodes.put(gnx, node)
 						}
 						case "t": {
@@ -98,14 +98,16 @@ class LeoEngine {
 
 	static LeoEngine _le
 
-	Node currentNode
+	LeoNode _currentNode
 
+	def currentNode() { _currentNode }
+	
 	def selectNode(String gnx) {
-		currentNode = doc.get(gnx)
+		_currentNode = doc.get(gnx)
 	}
 
 	def currentBody() {
-		return currentNode.b
+		return _currentNode.b
 	}
 
 	static def getInstance() {
