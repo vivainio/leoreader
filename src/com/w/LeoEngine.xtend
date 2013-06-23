@@ -207,9 +207,24 @@ class HeadlineAdapter extends ArrayAdapter<OutlineItem> {
 	
 }
 
+class LeoGui {
+	
+	Activity _activity
+	
+	new(Activity a) {
+		_activity = a
+	}
+	def openFile() {
+		val intent = new Intent("org.openintents.action.PICK_FILE")
+		_activity.startActivityForResult(intent, 1)		
+		
+	}
+}
+
 class LeoEngine {
 	LeoDoc doc
 	Activity rootActivity
+	LeoGui gui
 	
 	ArrayAdapter<OutlineItem> adapter
 	public ArrayList<OutlineItem> ITEMS // = new ArrayList<OutlineItem>();
@@ -221,7 +236,7 @@ class LeoEngine {
 	
 	def setRootActivity(Activity a) {
 		rootActivity = a
-		
+		gui = new LeoGui(rootActivity)	
 		adapter = new HeadlineAdapter(a,
 			R$id::headline_list_item,			
 			ITEMS
@@ -254,6 +269,7 @@ class LeoEngine {
 	def boolean selectNode(String gnx) {
 		switch gnx {
 			case '_openfile': {
+				gui.openFile()
 				return false
 			}
 			default: {
