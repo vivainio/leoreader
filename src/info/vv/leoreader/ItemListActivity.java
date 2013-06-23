@@ -108,7 +108,10 @@ public class ItemListActivity extends FragmentActivity implements
 	public void onItemSelected(String id) {
 
 		LeoEngine e = LeoEngine.getInstance();
-		e.selectNode(id);
+		boolean doit = e.selectNode(id);
+		if (!doit) 
+			return;
+		
 
 		if (mTwoPane) {
 			// In two-pane mode, show the detail view in this activity by

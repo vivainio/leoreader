@@ -237,10 +237,9 @@ class LeoEngine {
 	new() {
 		ITEM_MAP = new HashMap<String, OutlineItem>()
 		ITEMS = new ArrayList<OutlineItem>()
-		val ol = new OutlineItem("a", "",0)
+		
+		val ol = new OutlineItem("_openfile", "Open a .leo file to start", 0)		
 		ITEMS.add(ol)
-		val ol2 = new OutlineItem("b", "",0)
-		ITEMS.add(ol2)
 
 	}
 
@@ -252,8 +251,19 @@ class LeoEngine {
 		_currentNode
 	}
 
-	def selectNode(String gnx) {
-		_currentNode = doc.get(gnx)
+	def boolean selectNode(String gnx) {
+		switch gnx {
+			case '_openfile': {
+				return false
+			}
+			default: {
+				_currentNode = doc.get(gnx)
+				return true				
+			}
+			
+			
+		}		
+		
 	}
 
 	def currentBody() {
@@ -284,8 +294,7 @@ class LeoEngine {
 		val ns = doc.nodes
 		ITEMS.clear
 		ITEM_MAP.clear
-		edges.forEach[ edge |
-			
+		edges.forEach[ edge |			
 			val v = ns.get(edge.b)
 			println("Edge: " + edge.toString )
 			val olit = new OutlineItem(v.gnx, v.h, edge.depth)
