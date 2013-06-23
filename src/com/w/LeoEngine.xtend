@@ -312,12 +312,6 @@ class LeoEngine {
 			val olit = new OutlineItem(v.gnx, v.h, edge.depth)
 			addItem(olit)
 		]
-		/*
-		ns.forEach [ k, v |
-			val olit = new OutlineItem(v.gnx, v.h)
-			addItem(olit)
-		]
-		*  */
 		
 		adapter.notifyDataSetChanged
 
