@@ -1,33 +1,28 @@
 package com.w
 
-import info.vv.leoreader.dummy.ScreenContent
-import info.vv.leoreader.dummy.ScreenContent$OutlineItem
-import java.io.FileReader
-import java.util.Hashtable
-import org.xmlpull.v1.XmlPullParser
-import org.xmlpull.v1.XmlPullParserFactory
-import android.content.Intent
-import java.io.InputStreamReader
-import java.io.InputStream
-import java.io.FileInputStream
-import android.net.Uri
-import android.content.ContentResolver
 import android.app.Activity
-import android.widget.ArrayAdapter
 import android.content.Context
-import java.util.List
-//import android.R
-import java.util.HashMap
-import java.util.ArrayList
+import android.content.Intent
+import android.net.Uri
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.LinearLayout
+import android.widget.RelativeLayout
 import android.widget.TextView
 import info.vv.leoreader.R
-import android.view.LayoutInflater
-import android.widget.LinearLayout
-import android.widget.LinearLayout$LayoutParams
-import android.widget.RelativeLayout
+import info.vv.leoreader.dummy.ScreenContent
+import info.vv.leoreader.dummy.ScreenContent$OutlineItem
+import java.io.FileInputStream
+import java.io.InputStream
+import java.io.InputStreamReader
+import java.util.ArrayList
+import java.util.HashMap
+import java.util.Hashtable
 import java.util.Stack
+import org.xmlpull.v1.XmlPullParser
+import org.xmlpull.v1.XmlPullParserFactory
 
 @Data class Course {
 }
@@ -214,6 +209,7 @@ class LeoGui {
 	new(Activity a) {
 		_activity = a
 	}
+	
 	def openFile() {
 		val intent = new Intent("org.openintents.action.PICK_FILE")
 		_activity.startActivityForResult(intent, 1)		
