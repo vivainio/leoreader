@@ -25,8 +25,8 @@ public class ScreenContent {
 
 	static {
 		// Add 3 sample items.
-		addItem(new OutlineItem("731", "Hermia 3"));
-		addItem(new OutlineItem("424", "Hermia 6"));
+		//addItem(new OutlineItem("731", "Hermia 3"));
+		//addItem(new OutlineItem("424", "Hermia 6"));
 		//addItem(new DummyItem("3", "Item 3"));
 	}
 
@@ -41,10 +41,12 @@ public class ScreenContent {
 	public static class OutlineItem {
 		public String id;
 		public String content;
+		public int depth;
 
-		public OutlineItem(String id, String content) {
+		public OutlineItem(String id, String content, int depth) {
 			this.id = id;
 			this.content = content;
+			this.depth = depth;
 		}
 
 		@Override

@@ -24,15 +24,27 @@ import android.view.ViewGroup
 import android.widget.TextView
 import info.vv.leoreader.R
 import android.view.LayoutInflater
+import android.widget.LinearLayout
+import android.widget.LinearLayout$LayoutParams
+import android.widget.RelativeLayout
+import java.util.Stack
 
 @Data class Course {
+}
+
+@Data class LeoEdge {
+	String a
+	String b
+	// depth is redundant, and a hack, just for quick and dirty impl
+	int depth	
+	
 }
 
 class LeoNode {
 
 	String _h
 	String _b
-	String _gnx
+	String _gnx	
 
 	new(String gnx, String h, String b) {
 		_gnx = gnx;
@@ -62,11 +74,17 @@ class LeoNode {
 class LeoDoc {
 	Hashtable<String, LeoNode> nodes
 
+	ArrayList<LeoEdge> edges
+	
 	new() {
 		nodes = new Hashtable<String, LeoNode>
+		edges = new ArrayList<LeoEdge>
 
 	}
 
+	def getEdges() {
+		edges
+	}
 	def getNodes() {
 		nodes
 	}
@@ -82,13 +100,14 @@ class LeoDoc {
 
 	def read(InputStream is) {
 		val pf = XmlPullParserFactory::newInstance
-		nodes.clear
+		nodes.clear		//super.getView(position, convertView, parent)
 		val p = pf.newPullParser
 		p.setInput(new InputStreamReader(is))
 		var eventType = p.eventType
 		var text = ""
-		var gnx = ""
-
+		var gnx = ""		
+		var depth = 0
+		val parent_stack = new Stack<String>()
 		while (eventType != XmlPullParser::END_DOCUMENT) {
 			val name = p.name
 			println(name)
@@ -100,17 +119,32 @@ class LeoDoc {
 						case "vh": {
 							println('''End tag vh t = «text» gnx = «gnx»''')
 							val node = new LeoNode(gnx, text, "some body\nnew line")
+							val parent_gnx = parent_stack.peek()
+							val edge = new LeoEdge(parent_gnx, gnx, depth)
+							edges.add(edge)
 							nodes.put(gnx, node)
 						}
 						case "t": {
 							val node = get(gnx)
 							node.b = text
 						}
+						
+						case "v": {
+							parent_stack.pop()		
+							depth = depth - 1
+						}
 					}
 				case XmlPullParser::START_TAG:
 					switch name {
-						case "v":
-							gnx = p.getAttributeValue("", "t")
+						case "v": {
+							parent_stack.push(gnx)
+							gnx = p.getAttributeValue("", "t")							
+							
+							depth = depth + 1						
+						}
+							
+							
+							
 						case "t":
 							gnx = p.getAttributeValue("", "tx")
 					}
@@ -145,6 +179,7 @@ class HeadlineAdapter extends ArrayAdapter<OutlineItem> {
 		//throw new Exception("hello")
 		println(" **************8 getView " + position)
 	
+		val olit = items.get(position)
 		
 		var view = convertView
 		
@@ -152,19 +187,22 @@ class HeadlineAdapter extends ArrayAdapter<OutlineItem> {
 			view = inflater.inflate(R$layout::headline_item, null)
 		}
 		
+
+ 			
+		
+		var RelativeLayout$LayoutParams p = new RelativeLayout$LayoutParams(RelativeLayout$LayoutParams::WRAP_CONTENT,
+			LinearLayout$LayoutParams::WRAP_CONTENT)
+			
+		p.setMargins(olit.depth * 5, 0,0,0)		
+		
 		
 		val tv = view.findViewById(R$id::headline_text) as TextView
-		val olit = items.get(position)
+		tv.setLayoutParams(p)
+		
 		tv.setText(olit.content)
 		
 		return view
-		
-		
-		
-		
-		
-		
-		//super.getView(position, convertView, parent)
+	
 	}
 	
 }
@@ -199,9 +237,9 @@ class LeoEngine {
 	new() {
 		ITEM_MAP = new HashMap<String, OutlineItem>()
 		ITEMS = new ArrayList<OutlineItem>()
-		val ol = new OutlineItem("a", "")
+		val ol = new OutlineItem("a", "",0)
 		ITEMS.add(ol)
-		val ol2 = new OutlineItem("b", "")
+		val ol2 = new OutlineItem("b", "",0)
 		ITEMS.add(ol2)
 
 	}
@@ -242,14 +280,24 @@ class LeoEngine {
 	}
 
 	def render() {
+		val edges = doc.edges
 		val ns = doc.nodes
 		ITEMS.clear
 		ITEM_MAP.clear
-
+		edges.forEach[ edge |
+			
+			val v = ns.get(edge.b)
+			println("Edge: " + edge.toString )
+			val olit = new OutlineItem(v.gnx, v.h, edge.depth)
+			addItem(olit)
+		]
+		/*
 		ns.forEach [ k, v |
 			val olit = new OutlineItem(v.gnx, v.h)
 			addItem(olit)
 		]
+		*  */
+		
 		adapter.notifyDataSetChanged
 
 	}
