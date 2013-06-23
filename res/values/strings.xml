@@ -3,5 +3,6 @@
 
     <string name="app_name">Leo Reader</string>
     <string name="title_item_detail">Body</string>
+    <string name="some_text">Some text</string>
 
 </resources>

@@ -136,6 +136,7 @@ public class ItemListFragment extends ListFragment {
 		getListView().setChoiceMode(
 				activateOnItemClick ? ListView.CHOICE_MODE_SINGLE
 						: ListView.CHOICE_MODE_NONE);
+		
 	}
 
 	private void setActivatedPosition(int position) {

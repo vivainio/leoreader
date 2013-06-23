@@ -16,9 +16,14 @@ import android.app.Activity
 import android.widget.ArrayAdapter
 import android.content.Context
 import java.util.List
-import android.R
+//import android.R
 import java.util.HashMap
 import java.util.ArrayList
+import android.view.View
+import android.view.ViewGroup
+import android.widget.TextView
+import info.vv.leoreader.R
+import android.view.LayoutInflater
 
 @Data class Course {
 }
@@ -121,18 +126,72 @@ class LeoDoc {
 
 }
 
+
+class HeadlineAdapter extends ArrayAdapter<OutlineItem> {
+	
+	LayoutInflater inflater
+	ArrayList<OutlineItem> items
+	
+	new(Context c, int layoutResourceId, ArrayList<OutlineItem> data) {
+		super(c,0,data)
+		//super(c, layoutResourceId, data)
+		items = data
+		inflater = context.getSystemService(Context::LAYOUT_INFLATER_SERVICE) as LayoutInflater
+		
+	
+	}
+	
+	override getView(int position, View convertView, ViewGroup parent) {
+		//throw new Exception("hello")
+		println(" **************8 getView " + position)
+	
+		
+		var view = convertView
+		
+		if (view == null) {
+			view = inflater.inflate(R$layout::headline_item, null)
+		}
+		
+		
+		val tv = view.findViewById(R$id::headline_text) as TextView
+		val olit = items.get(position)
+		tv.setText(olit.content)
+		
+		return view
+		
+		
+		
+		
+		
+		
+		//super.getView(position, convertView, parent)
+	}
+	
+}
+
 class LeoEngine {
 	LeoDoc doc
 	Activity rootActivity
+	
 	ArrayAdapter<OutlineItem> adapter
-	public List<OutlineItem> ITEMS // = new ArrayList<OutlineItem>();
+	public ArrayList<OutlineItem> ITEMS // = new ArrayList<OutlineItem>();
+	
+	
 	public HashMap<String, OutlineItem> ITEM_MAP
-
+		
+	
+	
 	def setRootActivity(Activity a) {
 		rootActivity = a
-		adapter = new ArrayAdapter<OutlineItem>(a, R$layout::simple_list_item_activated_1, R$id::text1, ITEMS);
+		
+		adapter = new HeadlineAdapter(a,
+			R$id::headline_list_item,			
+			ITEMS
+		);
+				 		
 	}
-
+	
+	
 	static LeoEngine _le
 
 	LeoNode _currentNode
@@ -140,6 +199,10 @@ class LeoEngine {
 	new() {
 		ITEM_MAP = new HashMap<String, OutlineItem>()
 		ITEMS = new ArrayList<OutlineItem>()
+		val ol = new OutlineItem("a", "")
+		ITEMS.add(ol)
+		val ol2 = new OutlineItem("b", "")
+		ITEMS.add(ol2)
 
 	}
 
@@ -175,7 +238,7 @@ class LeoEngine {
 
 	def addItem(OutlineItem item) {
 		ITEMS.add(item)
-		ITEM_MAP.put(item.id, item)
+		ITEM_MAP.put(item.id, item)		
 	}
 
 	def render() {
