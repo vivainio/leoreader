@@ -188,7 +188,7 @@ class HeadlineAdapter extends ArrayAdapter<OutlineItem> {
 		var RelativeLayout$LayoutParams p = new RelativeLayout$LayoutParams(RelativeLayout$LayoutParams::WRAP_CONTENT,
 			LinearLayout$LayoutParams::WRAP_CONTENT)
 			
-		p.setMargins(olit.depth * 5, 0,0,0)		
+		p.setMargins(olit.depth * 15, 0,0,0)		
 		
 		
 		val tv = view.findViewById(R$id::headline_text) as TextView
