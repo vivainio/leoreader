@@ -37,31 +37,15 @@ import org.xmlpull.v1.XmlPullParserFactory
 
 class LeoNode {
 
-	String _h
-	String _b
-	String _gnx	
-
+	@Property String h
+	@Property String b
+	@Property String gnx
+	
 	new(String gnx, String h, String b) {
 		_gnx = gnx;
 		_h = h;
 		_b = b
 
-	}
-
-	def void setB(String body) {
-		_b = body
-	}
-
-	def getH() {
-		_h
-	}
-
-	def getB() {
-		_b
-	}
-
-	def getGnx() {
-		_gnx
 	}
 
 }
@@ -105,14 +89,14 @@ class LeoDoc {
 		val parent_stack = new Stack<String>()
 		while (eventType != XmlPullParser::END_DOCUMENT) {
 			val name = p.name
-			println(name)
+			//println(name)
 			switch eventType {
 				case XmlPullParser::TEXT:
 					text = p.text
 				case XmlPullParser::END_TAG:
 					switch name {
 						case "vh": {
-							println('''End tag vh t = «text» gnx = «gnx»''')
+							//println('''End tag vh t = «text» gnx = «gnx»''')
 							val node = new LeoNode(gnx, text, "some body\nnew line")
 							val parent_gnx = parent_stack.peek()
 							val edge = new LeoEdge(parent_gnx, gnx, depth)
@@ -172,7 +156,7 @@ class HeadlineAdapter extends ArrayAdapter<OutlineItem> {
 	
 	override getView(int position, View convertView, ViewGroup parent) {
 		//throw new Exception("hello")
-		println(" **************8 getView " + position)
+		//println(" **************8 getView " + position)
 	
 		val olit = items.get(position)
 		
@@ -188,7 +172,7 @@ class HeadlineAdapter extends ArrayAdapter<OutlineItem> {
 		var RelativeLayout$LayoutParams p = new RelativeLayout$LayoutParams(RelativeLayout$LayoutParams::WRAP_CONTENT,
 			LinearLayout$LayoutParams::WRAP_CONTENT)
 			
-		p.setMargins(olit.depth * 15, 0,0,0)		
+		p.setMargin	s(olit.depth * 15, 0,0,0)		
 		
 		
 		val tv = view.findViewById(R$id::headline_text) as TextView
@@ -308,7 +292,7 @@ class LeoEngine {
 		ITEM_MAP.clear
 		edges.forEach[ edge |			
 			val v = ns.get(edge.b)
-			println("Edge: " + edge.toString )
+			//println("Edge: " + edge.toString )
 			val olit = new OutlineItem(v.gnx, v.h, edge.depth)
 			addItem(olit)
 		]
