@@ -166,13 +166,10 @@ class HeadlineAdapter extends ArrayAdapter<OutlineItem> {
 			view = inflater.inflate(R$layout::headline_item, null)
 		}
 		
-
- 			
-		
 		var RelativeLayout$LayoutParams p = new RelativeLayout$LayoutParams(RelativeLayout$LayoutParams::WRAP_CONTENT,
 			LinearLayout$LayoutParams::WRAP_CONTENT)
 			
-		p.setMargin	s(olit.depth * 15, 0,0,0)		
+		p.setMargins(olit.depth * 15, 0,0,0)		
 		
 		
 		val tv = view.findViewById(R$id::headline_text) as TextView
@@ -292,7 +289,7 @@ class LeoEngine {
 		ITEM_MAP.clear
 		edges.forEach[ edge |			
 			val v = ns.get(edge.b)
-			//println("Edge: " + edge.toString )
+			println("Edge: " + edge.toString )
 			val olit = new OutlineItem(v.gnx, v.h, edge.depth)
 			addItem(olit)
 		]

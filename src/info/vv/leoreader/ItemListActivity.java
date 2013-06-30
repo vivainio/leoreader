@@ -90,7 +90,7 @@ public class ItemListActivity extends FragmentActivity implements
 	@Override
 	protected void onActivityResult(int arg0, int arg1, Intent data) {
 		// TODO Auto-generated method stub
-		String filename = data.getDataString();
+		//String filename = data.getDataString();
 		//System.out.println("ItemListActivity.onActivityResult() " + filename);
 		LeoEngine.getInstance().openURl(data.getData());
 
