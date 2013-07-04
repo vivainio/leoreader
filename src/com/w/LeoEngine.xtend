@@ -24,9 +24,6 @@ import java.util.Stack
 import org.xmlpull.v1.XmlPullParser
 import org.xmlpull.v1.XmlPullParserFactory
 
-@Data class Course {
-}
-
 @Data class LeoEdge {
 	String a
 	String b
