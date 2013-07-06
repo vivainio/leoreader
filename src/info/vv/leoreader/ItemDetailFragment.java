@@ -1,5 +1,7 @@
 package info.vv.leoreader;
 
+import roboguice.inject.InjectView;
+
 import com.w.LeoEngine;
 import com.w.LeoNode;
 
@@ -21,6 +23,9 @@ public class ItemDetailFragment extends Fragment {
 	 * The fragment argument representing the item ID that this fragment
 	 * represents.
 	 */
+	
+	@InjectView(R.id.item_detail) TextView detailView;
+	
 	public static final String ARG_ITEM_ID = "item_id";
 
 	/**
@@ -32,8 +37,8 @@ public class ItemDetailFragment extends Fragment {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
 
+		super.onCreate(savedInstanceState);
 		if (getArguments().containsKey(ARG_ITEM_ID)) {
 			ScreenContent.ITEM_MAP.get(getArguments().getString(
 					ARG_ITEM_ID));
@@ -41,10 +46,9 @@ public class ItemDetailFragment extends Fragment {
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		View rootView = inflater.inflate(R.layout.fragment_item_detail,
-				container, false);
+	public void onViewCreated(View view, Bundle savedInstanceState) {
+		// TODO Auto-generated method stub
+		super.onViewCreated(view, savedInstanceState);
 
 		LeoEngine e = LeoEngine.getInstance();
 		LeoNode n = e.currentNode();
@@ -52,35 +56,15 @@ public class ItemDetailFragment extends Fragment {
 		
 		getActivity().setTitle(n.getH());
 		
-		((TextView) rootView.findViewById(R.id.item_detail))
-				.setText(n.getB());
-		
-		
-			
-			/*
-			String loc = getArguments().getString(
-					ARG_ITEM_ID);
-			StringBuilder b = new StringBuilder();
-			b.append(mItem.content);
-			
-			List<Course> li = LunchContent.ITEMS.get(loc);
-			// fetch the courses for this restaurant
-			for (Course c : li) {
-				b.append(c.getCategory());
-				b.append("\n");
-				b.append(c.getTitle());
-				b.append("\n");
-				
-				
-			}
-			*/
-			//String loc = getArguments().getString(
-			//		ARG_ITEM_ID);
-			
-			//Spanned span = LunchEngine.renderLunchList(loc);
-			//((TextView) rootView.findViewById(R.id.item_detail))
-			//.setText(span);
-		
+		detailView.setText(n.getB());
+
+	}
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+
+		View rootView = inflater.inflate(R.layout.fragment_item_detail,
+				container, false);
 
 		return rootView;
 	}

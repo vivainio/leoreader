@@ -24,6 +24,7 @@ import java.util.Stack
 import org.xmlpull.v1.XmlPullParser
 import org.xmlpull.v1.XmlPullParserFactory
 
+
 @Data class LeoEdge {
 	String a
 	String b
@@ -189,9 +190,19 @@ class LeoGui {
 	}
 	
 	def openFile() {
+		//share()
 		val intent = new Intent("org.openintents.action.PICK_FILE")
 		_activity.startActivityForResult(intent, 1)		
 		
+	}
+	
+	def share() {
+		val shareintent = new Intent(android.content.Intent.ACTION_SEND)
+		shareintent.type = "text/plain"
+		shareintent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Leo snippet")
+		shareintent.putExtra(android.content.Intent.EXTRA_TEXT, "Longer text with stuff")
+		
+		_activity.startActivity(Intent.createChooser(shareintent, "Share to"))
 	}
 }
 
