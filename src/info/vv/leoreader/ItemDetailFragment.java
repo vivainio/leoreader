@@ -1,17 +1,16 @@
 package info.vv.leoreader;
 
-import roboguice.inject.InjectView;
-
-import com.w.LeoEngine;
-import com.w.LeoNode;
-
 import info.vv.leoreader.dummy.ScreenContent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView.FindListener;
 import android.widget.TextView;
+
+import com.w.LeoEngine;
+import com.w.LeoNode;
 
 /**
  * A fragment representing a single Item detail screen. This fragment is either
@@ -24,7 +23,7 @@ public class ItemDetailFragment extends Fragment {
 	 * represents.
 	 */
 	
-	@InjectView(R.id.item_detail) TextView detailView;
+	//@InjectView(R.id.item_detail) TextView detailView;
 	
 	public static final String ARG_ITEM_ID = "item_id";
 
@@ -55,8 +54,8 @@ public class ItemDetailFragment extends Fragment {
 		
 		
 		getActivity().setTitle(n.getH());
-		
-		detailView.setText(n.getB());
+		TextView d = (TextView) (view.findViewById(R.id.item_detail));
+		d.setText(n.getB());
 
 	}
 	@Override
